@@ -532,7 +532,29 @@ const Farms = () => {
 
 
     // =========================================
-    // RENDER
+    // RENDER LOADING SCREEN
+    // =========================================
+
+    if (loading) {
+        return (
+            <div className="loading-screen">
+                <div className="loading-logo">
+                    <img
+                        src="/img/green1.png"
+                        alt="FARMORA"
+                    />
+                </div>
+
+                <p>
+                    Memuat data kebun...
+                </p>
+            </div>
+        );
+    }
+
+
+    // =========================================
+    // RENDER MAIN CONTENT
     // =========================================
 
     return (
@@ -637,176 +659,161 @@ const Farms = () => {
                     </div>
 
 
-                    {/* LOADING */}
+                    {/* LIST OR EMPTY STATE */}
 
-                    if (loading) {
-        return (
-                    <div className="loading-screen">
-                        <div className="loading-logo">
-                            <img
-                                src="/img/green1.png"
-                                alt="FARMORA"
-                            />
+                    {farms.length === 0 ? (
+
+                        <div className="empty-panel">
+
+                            <div className="empty-icon">
+                                🌱
+                            </div>
+
+                            <h2>
+                                Belum ada kebun
+                            </h2>
+
+                            <p>
+                                Tambahkan kebun pertama
+                                untuk mulai mengelola FARMORA.
+                            </p>
+
+                            <button
+                                type="button"
+                                className="primary-button"
+                                onClick={openCreateForm}
+                            >
+                                + Tambah Kebun
+                            </button>
+
                         </div>
-
-                        <p>
-                            Memuat data aktivitas...
-                        </p>
-                    </div>
-                    );
-    }
-
-                    <div className="empty-panel">
-
-                        <div className="empty-icon">
-                            🌱
-                        </div>
-
-                        <h2>
-                            Belum ada kebun
-                        </h2>
-
-                        <p>
-                            Tambahkan kebun pertama
-                            untuk mulai mengelola FARMORA.
-                        </p>
-
-                        <button
-                            type="button"
-                            className="primary-button"
-                            onClick={openCreateForm}
-                        >
-                            + Tambah Kebun
-                        </button>
-
-                    </div>
 
                     ) : (
 
-                    <div className="farm-grid">
+                        <div className="farm-grid">
 
-                        {farms.map((farm) => (
+                            {farms.map((farm) => (
 
-                            <div
-                                className="farm-card"
-                                key={farm.id}
-                            >
+                                <div
+                                    className="farm-card"
+                                    key={farm.id}
+                                >
 
-                                <div className="farm-card-top">
+                                    <div className="farm-card-top">
 
-                                    <div className="farm-card-icon">
-                                        🌾
-                                    </div>
-
-                                    <div className="farm-actions">
-
-                                        <button
-                                            type="button"
-                                            onClick={() =>
-                                                openEditForm(farm)
-                                            }
-                                        >
-                                            Edit
-                                        </button>
-
-                                        <button
-                                            type="button"
-                                            className="danger-text"
-                                            onClick={() =>
-                                                handleDelete(farm)
-                                            }
-                                        >
-                                            Hapus
-                                        </button>
-
-                                    </div>
-
-                                </div>
-
-
-                                <h2>
-                                    {farm.name}
-                                </h2>
-
-
-                                {/* LOKASI */}
-
-                                <div className="farm-location">
-
-                                    <span>
-                                        ⌖
-                                    </span>
-
-                                    <span>
-                                        {farm.location ||
-                                            'Lokasi belum diisi'}
-                                    </span>
-
-                                </div>
-
-
-                                {/* KOORDINAT */}
-
-                                {(farm.latitude !== null &&
-                                    farm.latitude !== undefined) ||
-                                    (farm.longitude !== null &&
-                                        farm.longitude !== undefined) ? (
-
-                                    <div className="farm-coordinates">
-
-                                        <div>
-                                            <span>Latitude</span>
-                                            <strong>
-                                                {formatCoordinate(farm.latitude)}
-                                            </strong>
+                                        <div className="farm-card-icon">
+                                            🌾
                                         </div>
 
-                                        <div>
-                                            <span>Longitude</span>
-                                            <strong>
-                                                {formatCoordinate(farm.longitude)}
-                                            </strong>
+                                        <div className="farm-actions">
+
+                                            <button
+                                                type="button"
+                                                onClick={() =>
+                                                    openEditForm(farm)
+                                                }
+                                            >
+                                                Edit
+                                            </button>
+
+                                            <button
+                                                type="button"
+                                                className="danger-text"
+                                                onClick={() =>
+                                                    handleDelete(farm)
+                                                }
+                                            >
+                                                Hapus
+                                            </button>
+
                                         </div>
 
                                     </div>
 
-                                ) : (
 
-                                    <div className="farm-no-coordinates">
-                                        Koordinat belum diatur
+                                    <h2>
+                                        {farm.name}
+                                    </h2>
+
+
+                                    {/* LOKASI */}
+
+                                    <div className="farm-location">
+
+                                        <span>
+                                            ⌖
+                                        </span>
+
+                                        <span>
+                                            {farm.location ||
+                                                'Lokasi belum diisi'}
+                                        </span>
+
                                     </div>
 
-                                )}
+
+                                    {/* KOORDINAT */}
+
+                                    {(farm.latitude !== null &&
+                                        farm.latitude !== undefined) ||
+                                        (farm.longitude !== null &&
+                                            farm.longitude !== undefined) ? (
+
+                                        <div className="farm-coordinates">
+
+                                            <div>
+                                                <span>Latitude</span>
+                                                <strong>
+                                                    {formatCoordinate(farm.latitude)}
+                                                </strong>
+                                            </div>
+
+                                            <div>
+                                                <span>Longitude</span>
+                                                <strong>
+                                                    {formatCoordinate(farm.longitude)}
+                                                </strong>
+                                            </div>
+
+                                        </div>
+
+                                    ) : (
+
+                                        <div className="farm-no-coordinates">
+                                            Koordinat belum diatur
+                                        </div>
+
+                                    )}
 
 
-                                {/* DESKRIPSI */}
+                                    {/* DESKRIPSI */}
 
-                                {farm.description && (
-                                    <p className="farm-description">
-                                        {farm.description}
-                                    </p>
-                                )}
+                                    {farm.description && (
+                                        <p className="farm-description">
+                                            {farm.description}
+                                        </p>
+                                    )}
 
 
-                                {/* FOOTER */}
+                                    {/* FOOTER */}
 
-                                <div className="farm-card-footer">
+                                    <div className="farm-card-footer">
 
-                                    <span>
-                                        Farm ID
-                                    </span>
+                                        <span>
+                                            Farm ID
+                                        </span>
 
-                                    <strong>
-                                        #{farm.id}
-                                    </strong>
+                                        <strong>
+                                            #{farm.id}
+                                        </strong>
+
+                                    </div>
 
                                 </div>
 
-                            </div>
+                            ))}
 
-                        ))}
-
-                    </div>
+                        </div>
 
                     )}
 
