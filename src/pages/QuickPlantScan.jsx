@@ -23,7 +23,7 @@ const QuickPlantScan = () => {
 
     const [error, setError] = useState('');
 
-    const backendBaseUrl = 'http://localhost:5000';
+    const backendBaseUrl = (import.meta.env.VITE_API_URL || 'http://localhost:5000/api').replace(/\/api\/?$/, '');
 
     // =========================================================
     // IMAGE URL
@@ -41,7 +41,9 @@ const QuickPlantScan = () => {
             return imagePath;
         }
 
-        return `${backendBaseUrl}/${imagePath.replace(/^\/+/, '')}`;
+        const normalizedPath = imagePath.replace(/^\/+/, '');
+
+        return `${backendBaseUrl}/${normalizedPath}`;
     };
 
     // =========================================================
