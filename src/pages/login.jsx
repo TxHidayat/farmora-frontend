@@ -6,13 +6,14 @@ import { useAuth } from '../context/AuthContext';
 
 const Login = () => {
     const navigate = useNavigate();
-    const { login } = useAuth();
+    const { login, loginDemo } = useAuth();
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
+    const [demoLoading, setDemoLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
 
     const handleSubmit = async (event) => {
@@ -46,6 +47,26 @@ const Login = () => {
             );
         } finally {
             setLoading(false);
+        }
+    };
+
+    const handleDemoLogin = async () => {
+        setError('');
+        setDemoLoading(true);
+
+        try {
+            await loginDemo();
+            navigate('/dashboard', {
+                replace: true,
+            });
+        } catch (error) {
+            console.error('Demo login error:', error);
+            setError(
+                error.response?.data?.message ||
+                'Gagal masuk ke Mode Demo.'
+            );
+        } finally {
+            setDemoLoading(false);
         }
     };
 
@@ -221,11 +242,29 @@ const Login = () => {
                         <button
                             type="submit"
                             className="login-button"
-                            disabled={loading}
+                            disabled={loading || demoLoading}
                         >
                             {loading
                                 ? 'Memproses...'
                                 : 'Masuk ke Dashboard'}
+                        </button>
+
+                        {/* Divider */}
+                        <div className="login-divider">
+                            <span>atau coba preview</span>
+                        </div>
+
+                        {/* Demo Login Button */}
+                        <button
+                            type="button"
+                            className="demo-login-button"
+                            onClick={handleDemoLogin}
+                            disabled={loading || demoLoading}
+                        >
+                            <span style={{ fontSize: '15px' }}>👁️</span>
+                            {demoLoading
+                                ? 'Menyiapkan Mode Demo...'
+                                : 'Masuk Mode Demo (Read-Only)'}
                         </button>
 
                     </form>

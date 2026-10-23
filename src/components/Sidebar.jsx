@@ -15,6 +15,7 @@ const Sidebar = ({ activePage }) => {
 
     const {
         user,
+        isDemo,
         logout
     } = useAuth();
 
@@ -132,6 +133,12 @@ const Sidebar = ({ activePage }) => {
                             Smart Farm
                         </span>
 
+                        {isDemo && (
+                            <span className="demo-sidebar-badge">
+                                Mode Demo
+                            </span>
+                        )}
+
                     </div>
 
                 </div>
@@ -188,6 +195,11 @@ const Sidebar = ({ activePage }) => {
                                             user?.name ||
                                             'User'
                                         }
+                                        {isDemo && (
+                                            <span className="demo-user-tag">
+                                                Demo
+                                            </span>
+                                        )}
                                     </strong>
 
 
@@ -542,6 +554,11 @@ const Sidebar = ({ activePage }) => {
                                 user?.name ||
                                 'User'
                             }
+                            {isDemo && (
+                                <span className="demo-user-tag">
+                                    Demo
+                                </span>
+                            )}
                         </strong>
 
 

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import DemoBanner from '../components/DemoBanner';
 
 import {
     ResponsiveContainer,
@@ -641,6 +642,7 @@ const Dashboard = () => {
             ================================= */}
 
             <main className="dashboard-main">
+                <DemoBanner />
 
 
                 {/* =================================
