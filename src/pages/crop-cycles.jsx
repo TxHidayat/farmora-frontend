@@ -574,66 +574,36 @@ const CropCycles = () => {
     };
 
 
+
     const getStatusLabel = (status) => {
-
         const labels = {
-
-            persiapan:
-                'Persiapan',
-
-            tumbuh:
-                'Tumbuh',
-
-            panen:
-                'Siap Panen',
-
-            selesai:
-                'Selesai',
-
+            persiapan: 'Persiapan',
+            tumbuh: 'Tumbuh',
+            berbuah: 'Berbuah',
+            panen: 'Siap Panen',
+            selesai: 'Selesai',
+            gagal: 'Gagal',
         };
 
-
-        return (
-
-            labels[status] ||
-
-            status ||
-
-            '-'
-
-        );
-
+        return labels[status] || status || '-';
     };
+
+
 
 
     const getStatusClass = (status) => {
-
         const classes = {
-
-            persiapan:
-                'status-preparation',
-
-            tumbuh:
-                'status-growing',
-
-            panen:
-                'status-harvest',
-
-            selesai:
-                'status-completed',
-
+            persiapan: 'status-preparation',
+            tumbuh: 'status-growing',
+            berbuah: 'status-fruiting',
+            panen: 'status-harvest',
+            selesai: 'status-completed',
+            gagal: 'status-failed',
         };
 
-
-        return (
-
-            classes[status] ||
-
-            'status-default'
-
-        );
-
+        return classes[status] || 'status-default';
     };
+
 
 
     // =========================================
@@ -1400,10 +1370,6 @@ const CropCycles = () => {
                                         Tumbuh
                                     </option>
 
-                                    <option value="berbunga">
-                                        Berbunga
-                                    </option>
-
                                     <option value="berbuah">
                                         Berbuah
                                     </option>
@@ -1414,6 +1380,10 @@ const CropCycles = () => {
 
                                     <option value="selesai">
                                         Selesai
+                                    </option>
+
+                                    <option value="gagal">
+                                        Gagal
                                     </option>
 
                                 </select>
