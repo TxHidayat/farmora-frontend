@@ -529,7 +529,7 @@ const Sidebar = ({ activePage }) => {
                 TIDAK DIUBAH
             ================================= */}
 
-            <div className="sidebar-bottom desktop-user-section">
+            <div className="sidebar-bottom desktop-user-section desktop-only-user-section">
 
 
                 <div className="sidebar-user">
