@@ -1400,6 +1400,14 @@ const CropCycles = () => {
                                         Tumbuh
                                     </option>
 
+                                    <option value="berbunga">
+                                        Berbunga
+                                    </option>
+
+                                    <option value="berbuah">
+                                        Berbuah
+                                    </option>
+
                                     <option value="panen">
                                         Siap Panen
                                     </option>
