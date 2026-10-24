@@ -8560,3 +8560,14 @@ h6 {
     gap: 10px;
   }
 }
+
+
+/* =========================================
+   FARMORA MOBILE: HIDE DUPLICATE PROFILE
+   ========================================= */
+
+@media (max-width: 768px) {
+  .sidebar .desktop-user-section {
+    display: none !important;
+  }
+}
