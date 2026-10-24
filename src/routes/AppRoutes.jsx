@@ -1,3 +1,5 @@
+
+import { lazy, Suspense } from 'react';
 import {
     Navigate,
     Route,
@@ -8,27 +10,27 @@ import {
 // AUTH PAGES
 // =====================================================
 
-import Login from '../pages/login';
-import Register from '../pages/register';
+const Login = lazy(() => import('../pages/login'));
+const Register = lazy(() => import('../pages/register'));
 
 // =====================================================
 // MAIN PAGES
 // =====================================================
 
-import Dashboard from '../pages/dashboard';
-import Farms from '../pages/farms';
-import Fields from '../pages/fields';
-import CropCycles from '../pages/crop-cycles';
+const Dashboard = lazy(() => import('../pages/dashboard'));
+const Farms = lazy(() => import('../pages/farms'));
+const Fields = lazy(() => import('../pages/fields'));
+const CropCycles = lazy(() => import('../pages/crop-cycles'));
 
-import Activities from '../pages/activities';
-import Harvests from '../pages/harvests';
-import Expenses from '../pages/expenses';
+const Activities = lazy(() => import('../pages/activities'));
+const Harvests = lazy(() => import('../pages/harvests'));
+const Expenses = lazy(() => import('../pages/expenses'));
 
-import Reports from '../pages/report';
-import Analytics from '../pages/analytics';
+const Reports = lazy(() => import('../pages/report'));
+const Analytics = lazy(() => import('../pages/analytics'));
 
-import AIDetection from '../pages/AIDetection';
-import QuickPlantScan from '../pages/QuickPlantScan';
+const AIDetection = lazy(() => import('../pages/AIDetection'));
+const QuickPlantScan = lazy(() => import('../pages/QuickPlantScan'));
 
 // =====================================================
 // AUTH CONTEXT
@@ -36,6 +38,24 @@ import QuickPlantScan from '../pages/QuickPlantScan';
 
 import { useAuth } from '../context/AuthContext';
 
+// =====================================================
+// LOADING FALLBACK
+// =====================================================
+
+const PageLoading = () => {
+    return (
+        <div className="loading-screen">
+            <div className="loading-logo">
+                <img
+                    src="/img/icon1.png"
+                    alt="FARMORA"
+                />
+            </div>
+
+            <p>Memuat halaman...</p>
+        </div>
+    );
+};
 
 // =====================================================
 // PROTECTED ROUTE
@@ -47,32 +67,9 @@ const ProtectedRoute = ({ children }) => {
         loading,
     } = useAuth();
 
-    // =================================================
-    // AUTH LOADING
-    // =================================================
-
     if (loading) {
-        return (
-            <div className="loading-screen">
-
-                <div className="loading-logo">
-                    <img
-                        src="/img/icon1.png"
-                        alt="FARMORA"
-                    />
-                </div>
-
-                <p>
-                    Memuat FARMORA...
-                </p>
-
-            </div>
-        );
+        return <PageLoading />;
     }
-
-    // =================================================
-    // NOT AUTHENTICATED
-    // =================================================
 
     if (!isAuthenticated) {
         return (
@@ -86,12 +83,9 @@ const ProtectedRoute = ({ children }) => {
     return children;
 };
 
-
 // =====================================================
 // PUBLIC ROUTE
-// Digunakan untuk Login & Register
-// Jika user sudah login, jangan biarkan kembali
-// ke halaman Login/Register.
+// Login & Register
 // =====================================================
 
 const PublicRoute = ({ children }) => {
@@ -100,32 +94,9 @@ const PublicRoute = ({ children }) => {
         loading,
     } = useAuth();
 
-    // =================================================
-    // AUTH LOADING
-    // =================================================
-
     if (loading) {
-        return (
-            <div className="loading-screen">
-
-                <div className="loading-logo">
-                    <img
-                        src="/img/icon1.png"
-                        alt="FARMORA"
-                    />
-                </div>
-
-                <p>
-                    Memuat FARMORA...
-                </p>
-
-            </div>
-        );
+        return <PageLoading />;
     }
-
-    // =================================================
-    // ALREADY LOGIN
-    // =================================================
 
     if (isAuthenticated) {
         return (
@@ -139,195 +110,171 @@ const PublicRoute = ({ children }) => {
     return children;
 };
 
-
 // =====================================================
 // APP ROUTES
 // =====================================================
 
 const AppRoutes = () => {
-
     return (
-        <Routes>
+        <Suspense fallback={<PageLoading />}>
+            <Routes>
 
-            {/* =================================================
-                AUTH
-            ================================================= */}
+                {/* AUTH */}
 
-            <Route
-                path="/login"
-                element={
-                    <PublicRoute>
-                        <Login />
-                    </PublicRoute>
-                }
-            />
+                <Route
+                    path="/login"
+                    element={
+                        <PublicRoute>
+                            <Login />
+                        </PublicRoute>
+                    }
+                />
 
-            <Route
-                path="/register"
-                element={
-                    <PublicRoute>
-                        <Register />
-                    </PublicRoute>
-                }
-            />
+                <Route
+                    path="/register"
+                    element={
+                        <PublicRoute>
+                            <Register />
+                        </PublicRoute>
+                    }
+                />
 
+                {/* DASHBOARD */}
 
-            {/* =================================================
-                DASHBOARD
-            ================================================= */}
+                <Route
+                    path="/dashboard"
+                    element={
+                        <ProtectedRoute>
+                            <Dashboard />
+                        </ProtectedRoute>
+                    }
+                />
 
-            <Route
-                path="/dashboard"
-                element={
-                    <ProtectedRoute>
-                        <Dashboard />
-                    </ProtectedRoute>
-                }
-            />
+                {/* FARM MANAGEMENT */}
 
+                <Route
+                    path="/farms"
+                    element={
+                        <ProtectedRoute>
+                            <Farms />
+                        </ProtectedRoute>
+                    }
+                />
 
-            {/* =================================================
-                FARM MANAGEMENT
-            ================================================= */}
+                <Route
+                    path="/fields"
+                    element={
+                        <ProtectedRoute>
+                            <Fields />
+                        </ProtectedRoute>
+                    }
+                />
 
-            <Route
-                path="/farms"
-                element={
-                    <ProtectedRoute>
-                        <Farms />
-                    </ProtectedRoute>
-                }
-            />
+                <Route
+                    path="/crop-cycles"
+                    element={
+                        <ProtectedRoute>
+                            <CropCycles />
+                        </ProtectedRoute>
+                    }
+                />
 
-            <Route
-                path="/fields"
-                element={
-                    <ProtectedRoute>
-                        <Fields />
-                    </ProtectedRoute>
-                }
-            />
+                {/* OPERATIONAL */}
 
-            <Route
-                path="/crop-cycles"
-                element={
-                    <ProtectedRoute>
-                        <CropCycles />
-                    </ProtectedRoute>
-                }
-            />
+                <Route
+                    path="/activities"
+                    element={
+                        <ProtectedRoute>
+                            <Activities />
+                        </ProtectedRoute>
+                    }
+                />
 
+                <Route
+                    path="/harvests"
+                    element={
+                        <ProtectedRoute>
+                            <Harvests />
+                        </ProtectedRoute>
+                    }
+                />
 
-            {/* =================================================
-                OPERATIONAL
-            ================================================= */}
+                <Route
+                    path="/expenses"
+                    element={
+                        <ProtectedRoute>
+                            <Expenses />
+                        </ProtectedRoute>
+                    }
+                />
 
-            <Route
-                path="/activities"
-                element={
-                    <ProtectedRoute>
-                        <Activities />
-                    </ProtectedRoute>
-                }
-            />
+                {/* ANALYTICS */}
 
-            <Route
-                path="/harvests"
-                element={
-                    <ProtectedRoute>
-                        <Harvests />
-                    </ProtectedRoute>
-                }
-            />
+                <Route
+                    path="/reports"
+                    element={
+                        <ProtectedRoute>
+                            <Reports />
+                        </ProtectedRoute>
+                    }
+                />
 
-            <Route
-                path="/expenses"
-                element={
-                    <ProtectedRoute>
-                        <Expenses />
-                    </ProtectedRoute>
-                }
-            />
+                <Route
+                    path="/analytics"
+                    element={
+                        <ProtectedRoute>
+                            <Analytics />
+                        </ProtectedRoute>
+                    }
+                />
 
+                {/* AI TOOLS */}
 
-            {/* =================================================
-                ANALYTICS
-            ================================================= */}
+                <Route
+                    path="/ai-detection"
+                    element={
+                        <ProtectedRoute>
+                            <AIDetection />
+                        </ProtectedRoute>
+                    }
+                />
 
-            <Route
-                path="/reports"
-                element={
-                    <ProtectedRoute>
-                        <Reports />
-                    </ProtectedRoute>
-                }
-            />
+                <Route
+                    path="/ai-detection/quick-scan"
+                    element={
+                        <ProtectedRoute>
+                            <QuickPlantScan />
+                        </ProtectedRoute>
+                    }
+                />
 
-            <Route
-                path="/analytics"
-                element={
-                    <ProtectedRoute>
-                        <Analytics />
-                    </ProtectedRoute>
-                }
-            />
+                {/* DEFAULT */}
 
+                <Route
+                    path="/"
+                    element={
+                        <Navigate
+                            to="/dashboard"
+                            replace
+                        />
+                    }
+                />
 
-            {/* =================================================
-                AI TOOLS
-            ================================================= */}
+                {/* 404 */}
 
-            <Route
-                path="/ai-detection"
-                element={
-                    <ProtectedRoute>
-                        <AIDetection />
-                    </ProtectedRoute>
-                }
-            />
+                <Route
+                    path="*"
+                    element={
+                        <Navigate
+                            to="/dashboard"
+                            replace
+                        />
+                    }
+                />
 
-            <Route
-                path="/ai-detection/quick-scan"
-                element={
-                    <ProtectedRoute>
-                        <QuickPlantScan />
-                    </ProtectedRoute>
-                }
-            />
-
-
-            {/* =================================================
-                DEFAULT
-            ================================================= */}
-
-            <Route
-                path="/"
-                element={
-                    <Navigate
-                        to="/dashboard"
-                        replace
-                    />
-                }
-            />
-
-
-            {/* =================================================
-                404
-            ================================================= */}
-
-            <Route
-                path="*"
-                element={
-                    <Navigate
-                        to="/dashboard"
-                        replace
-                    />
-                }
-            />
-
-        </Routes>
+            </Routes>
+        </Suspense>
     );
 };
-
 
 export default AppRoutes;

@@ -125,9 +125,6 @@ const Farms = () => {
             setLoading(true);
             setError('');
 
-            // Delay sementara agar loading screen terlihat saat testing
-            await new Promise((resolve) => setTimeout(resolve, 1500));
-
             const response = await api.get('/farms');
 
             if (response.data.success) {
